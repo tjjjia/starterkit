@@ -63,7 +63,7 @@ fields:
       type: headline
       help: >
          Please take your time to review the scraped metadata.
-         Blank fields are accepted for non-required fields.
+         Blank fields are accepted for fields without asterisks (*).
 
    title:
       label: Title
@@ -71,8 +71,19 @@ fields:
       # readonly: true
 
    imageurl:
-      label: Image URL
+      label: Image (scraped)
       type: url
+      width: 1/2
+      help: >
+         Invisible. This only indicates an image has been found. To include an image to a post, please download this image and add image to the next form field manually.
+      # readonly: true
+
+   image:
+      label: Image
+      type: image
+      width: 1/2
+      help: >
+         Image to be included in post. Recommended use: Instagram, Flickr and other user-generated & photo-centric platforms.
       # readonly: true
 
    datetime_src:

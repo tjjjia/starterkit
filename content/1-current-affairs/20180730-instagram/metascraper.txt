@@ -1,0 +1,44 @@
+Inputsection: 
+
+----
+
+Datetime: 2018-07-30 12:50
+
+----
+
+Url-src: https://www.instagram.com/p/BkPWAjzjPEe/
+
+----
+
+Residents: 
+
+----
+
+Dynsection: 
+
+----
+
+Title: Michæl on Instagram: “Sensitivity Training with @fenderwall &&@crossingparallels”
+
+----
+
+Imageurl: https://scontent-sjc3-1.cdninstagram.com/vp/1e22b76ede3859dd2cb9b2a345f3c9bb/5B618116/t51.2885-15/e15/34093247_453457635114951_7185527114236428288_n.jpg?_nc_eui2=AeGdePlOm4Bq1zMnVqiH1AQJHFV1alOUNu9Gbkiwpas-4v7FFaqi6AeAboANZ8Yhe9aLwwUeLoitFILpkoZEzt1v
+
+----
+
+Datetime-src: 
+
+----
+
+Description: 
+
+30 Likes, 1 Comments - Michæl (@tjjjjjjia) on Instagram: “Sensitivity Training with @fenderwall &&
+@crossingparallels”
+
+----
+
+Author: tjjjjjjia
+
+----
+
+Publisher: Instagram
