@@ -25,6 +25,12 @@ This list returns all articles related to a resident (original content)
 			<?php foreach($articles as $article): ?>
 				<?php if($article->intendedTemplate() == 'article'): ?>
 					<li class="<?= $article->intendedTemplate() ?>">
+						<?php if(! $article->datetime()->empty() && ! $article->author()->empty() ): ?>
+							<div class="card--infobox">
+								<p>Published by <?= $article->author() ?>
+								at <?= $article->datetime() ?></p>
+							</div>
+						<?php endif ?>
 							<div class="card--title">
 								<a href="<?= $article->url() ?>">
 									<h3><?= $article->title()->html() ?></h3>
@@ -39,26 +45,16 @@ This list returns all articles related to a resident (original content)
 										</div>
 									</a>
 							</div>
-						<?php if(! $article->teaser()->empty() ): ?>
-							<div class="card--main">
-								<p><?= $article->teaser() ?></p>
-							</div>
-						<?php elseif(! $article->text()->empty() ): ?>
-							<div class="card--main">
-								<p><?= excerpt($article->text(), 300) ?></p>
-							</div>
-						<?php else: ?>
-						<?php endif ?>
-						<?php if(! $article->datetime()->empty() ): ?>
-							<div class="card--infobox">
-								<p>Published: <?= $article->datetime() ?></p>
-							</div>
-						<?php endif ?>
-						<?php if(! $article->author()->empty() ): ?>
-							<div class="card--infobox">
-								<p>Author: <?= $article->author() ?></p>
-							</div>
-						<?php endif ?>
+							<?php if(! $article->teaser()->empty() ): ?>
+								<div class="card--main">
+									<p><?= $article->teaser() ?></p>
+								</div>
+							<?php elseif(! $article->text()->empty() ): ?>
+								<div class="card--main">
+									<p><?= excerpt($article->text(), 300) ?></p>
+								</div>
+							<?php else: ?>
+							<?php endif ?>
 							<!-- <div class="card--residents">
 								<ul>
 									<?php
@@ -75,28 +71,30 @@ This list returns all articles related to a resident (original content)
 
 				<?php elseif($article->intendedTemplate() == 'metascraper'): ?>
 					<li class="<?= $article->intendedTemplate() ?>">
+						<?php if(! $article->datetime_src()->empty() && ! $article->url_src()->empty()): ?>
+							<div class="card--infobox">
+								<p>Originally published
+									on
+									<a href="<?= $article->url_src() ?>" target="_blank">
+										<?= parse_url($article->url_src(), PHP_URL_HOST) ?>
+									</a>
+									at
+									<?= $article->datetime_src() ?>
+									  <!-- on <?= $article->publisher() ?> -->
+								</p>
+							</div>
+						<?php endif ?>
 						<div class="card--main">
 							<a href="<?= $article->url_src() ?>" target="_blank">
 								<h3><?= $article->title()->html() ?> <img src="/assets/svg/chain.svg" style="fill:#fff; height: 5rem; padding: .7rem;"></h3>
 							</a>
+							<?php if($article->image()): ?>
+								<figure>
+									<img src="<?= $article->image()->url() ?>" alt="Preview of <?= $article->title() ?>">
+								</figure>
+							<?php endif ?>
 							<p><?= excerpt($article->description(), 300) ?></p>
 						</div>
-						<?php if(! $article->datetime_src()->empty() ): ?>
-							<div class="card--infobox">
-								<p>Published: <?= $article->datetime_src() ?></p>
-							</div>
-						<?php endif ?>
-						<?php if(! $article->url_src()->empty() ): ?>
-							<div class="card--infobox">
-								<p>
-									Source:
-									<a href="<?= parse_url($article->url_src(), PHP_URL_SCHEME) ?>://<?= parse_url($article->url_src(), PHP_URL_HOST) ?>" target="_blank">
-										<?= parse_url($article->url_src(), PHP_URL_HOST) ?>
-									</a>
-								</p>
-							</div>
-						<?php endif ?>
-
 						<pre><?php print_r($article); ?></pre>
 
 					</li>

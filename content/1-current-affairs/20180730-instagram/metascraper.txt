@@ -18,7 +18,7 @@ Dynsection:
 
 ----
 
-Title: Michæl on Instagram: “Sensitivity Training with @fenderwall &&@crossingparallels”
+Title: “Sensitivity Training”
 
 ----
 
@@ -26,7 +26,7 @@ Imageurl: https://scontent-sjc3-1.cdninstagram.com/vp/1e22b76ede3859dd2cb9b2a345
 
 ----
 
-Datetime-src: 
+Datetime-src: 2018-06-20 00:00
 
 ----
 
@@ -42,3 +42,7 @@ Author: tjjjjjjia
 ----
 
 Publisher: Instagram
+
+----
+
+Image: 34093247_453457635114951_7185527114236428288_n.jpg
