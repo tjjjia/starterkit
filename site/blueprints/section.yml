@@ -26,3 +26,5 @@ fields:
          - link
          - image
          # - line
+      help: >
+         Formatting enabled, please refer to templates for various layout options.

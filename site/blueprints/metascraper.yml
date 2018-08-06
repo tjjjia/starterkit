@@ -83,7 +83,7 @@ fields:
       type: image
       width: 1/2
       help: >
-         Image to be included in post. Recommended use: Instagram, Flickr and other user-generated & photo-centric platforms.
+         Image to be included in post. Suggested use: Instagram, Twitter, Flickr and other user-generated/photo-centric platforms.
       # readonly: true
 
    datetime_src:
@@ -94,7 +94,7 @@ fields:
       time:
          format: 24
          interval: 5
-      # required: true
+      required: true
       # width: 1/2
 
    description:
