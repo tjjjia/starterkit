@@ -7,62 +7,6 @@
 	</p>
 </footer>
 
-<script type="text/javascript">
-	var toggle = true;
-
-
-	function toggleDevnotes(){
-		var pre = document.getElementsByTagName('pre');
-
-		if (toggle === true) {
-			for (var i = 0; i < pre.length; i++) {
-				pre[i].style.display = 'none';
-			}
-			toggle = false;
-		} else {
-			for (var i = 0; i < pre.length; i++) {
-				pre[i].style.display = '';
-			}
-			toggle = true;
-		}
-	}
-	function toggleBackground(){
-		var element = document.getElementsByTagName('body')[0];
-		if (toggle === true) {
-			element.className = '';
-			toggle = false;
-		} else {
-			element.className = 'dev-bg';
-			toggle = true;
-		}
-	}
-	function toggleJS(){
-		var element = document.getElementById('mobius');
-		if (toggle === true) {
-			element.style.display = 'none';
-			document.getElementsByTagName('body')[0].style.background = '#00f';
-			toggle = false;
-		} else {
-			element.style.display = '';
-			document.getElementsByTagName('body')[0].style.background = '';
-			toggle = true;
-		}
-	}
-
-	window.addEventListener("keydown", function(e) {
-		if ( e.code == 'KeyD' ) {
-			toggleDevnotes();
-		} if ( e.code == 'KeyF' ) {
-			// toggleBackground();
-			toggleJS();
-		}
-	}, true);
-
-	toggleDevnotes();
-
-
-</script>
-
 <div id="mobius"></div>
 
 <!-- <script type="text/javascript" src="http://localhost:3000/js/bundle.js"></script> -->
@@ -94,6 +38,10 @@
 	.filter--blueAlpha {
 		-webkit-filter: url(#alpha2);
 		filter: url(#alpha2);
+	}
+	.filter--blueOpaque {
+		-webkit-filter: url(#opaque);
+		filter: url(#opaque);
 	}
 </style>
 </body>

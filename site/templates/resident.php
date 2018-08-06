@@ -1,5 +1,5 @@
 <?php snippet('header') ?>
-<pre>this is the resident template</pre>
+
 <main class="main resident" role="main">
 	<article>
 		<header class="article-header">

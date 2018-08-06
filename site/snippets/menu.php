@@ -1,4 +1,3 @@
-<pre>menu snippet</pre>
 <nav role="navigation" id="menu">
 
 	<button class="hamburger">&#9776;</button>

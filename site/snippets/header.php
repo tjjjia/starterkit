@@ -16,7 +16,6 @@
 
 </head>
 <body>
-	<pre>header snippet</pre>
 	<header>
 		<a href="<?= url() ?>" rel="home">
 			<svg class="worm" viewBox="0 0 771.3 109.9">

@@ -1,6 +1,5 @@
 <?php snippet('header') ?>
 
-<pre>this is the default template (not in use?)</pre>
 <main class="main" role="main">
 
 	<header class="wrap">

@@ -1,5 +1,4 @@
 <?php snippet('header') ?>
-<pre>this is the article template</pre>
 
 <main class="main" role="main">
 	<article>

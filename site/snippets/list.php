@@ -1,25 +1,22 @@
-<pre>this is the list snippet</pre>
 <?php
 /*
 This list returns all articles related to a resident (original content)
 */
 
-// echo "<pre>";
-// print_r( $articles );
-// echo "</pre>";
 ?>
-<?php if (isset($cp_filter)): ?>
+<?php if (isset($cp_filter)): // residents page ?>
 	<section class="list <?=$cp_filter?>">
-<?php else: ?>
+<?php elseif (isset($resident)): // resident page ?>
+	<section class="list related-publications">
+		<h2>Related publications</h2>
+<?php else: // other instances of list.php ?>
 	<section class="list">
 <?php endif; ?>
 	<?php if($articles->count()): ?>
 		<?php
-			echo '<pre>'.$articles.'</pre>';
 			if (isset($cp_filter)) {
 				$articles = $articles->filterBy('programme', $cp_filter,',');
 			}
-			echo '<pre>'.$articles.'</pre>';
 		?>
 		<ul>
 			<?php foreach($articles as $article): ?>
@@ -55,18 +52,6 @@ This list returns all articles related to a resident (original content)
 								</div>
 							<?php else: ?>
 							<?php endif ?>
-							<!-- <div class="card--residents">
-								<ul>
-									<?php
-										$resident = $article->residents()->value();
-										$resident__array = explode(',', $resident);
-										foreach($resident__array as $resident):
-									?>
-										<li><?= $resident ?></li>
-									<?php endforeach ?>
-								</ul>
-							</div> -->
-						<!-- <pre><?php print_r($article); ?></pre> -->
 					</li>
 
 				<?php elseif($article->intendedTemplate() == 'metascraper'): ?>
@@ -95,8 +80,6 @@ This list returns all articles related to a resident (original content)
 							<?php endif ?>
 							<p><?= excerpt($article->description(), 300) ?></p>
 						</div>
-						<pre><?php print_r($article); ?></pre>
-
 					</li>
 
 				<?php elseif($article->intendedTemplate() == 'resident'): ?>
@@ -107,13 +90,10 @@ This list returns all articles related to a resident (original content)
 										<img src="<?= $thumb->url() ?>" alt="Thumbnail for <?= $article->title()->html() ?>" />
 									<?php endif ?> -->
 								</a>
-								<pre><?php print_r($article); ?></pre>
 							</li>
-
 				<?php endif ?>
 			<?php endforeach ?>
 		</ul>
 	<?php else: ?>
-		<pre>No associated items found.</pre>
 	<?php endif ?>
 </section>
