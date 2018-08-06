@@ -115,6 +115,8 @@ var app = function() {
 	var controls;
 	var camera, scene, renderer;
 
+	var light = [];
+
 	var mobius, mobius__hit
 	var texture, texture__reverse;
 
@@ -122,6 +124,8 @@ var app = function() {
 
 	var raycaster = new THREE.Raycaster();
 	var mouse = new THREE.Vector2(0,0); // set to prevent initial mouseOver
+	mouse.time = 0;
+
 	var gyro = new THREE.Vector3(0,0,0);
 
 	var viewtarget = new THREE.Vector3(-.3,0,0);
@@ -163,9 +167,8 @@ var app = function() {
 		var ambientLight = new THREE.AmbientLight( 0xffffff, .75 );
 		scene.add( ambientLight );
 
-		var light = [];
 		for (var i = 0; i < 2; i++) {
-			light[i] = new THREE.DirectionalLight( 0xffffff );
+			light[i] = new THREE.DirectionalLight( 0xffffff, 1 );
 		}
 		light[0].position.set( 0, 10, -10 );
 		light[1].position.set( -10, 10, 0 ); // test
@@ -219,25 +222,14 @@ var app = function() {
 		if ( currentPage.classList.contains('about') || currentPage.classList.contains('current-affairs') ) {
 			scene.add( grid );
 		} else {
-			light[0].intensity = .1;
-			light[1].intensity = .4;
-			ambientLight.intensity = .5;
+			// light[0].intensity = .1;
+			// light[1].intensity = .1;
+			ambientLight.intensity = .4;
 		}
 
 		grid.material.transparent = true;
 		grid.material.opacity = 1;
 		console.log( grid );
-
-		// var plane = new THREE.PlaneGeometry( 1000, 1000 );
-		// var planemesh = new THREE.Mesh( plane, material__matte );
-		// scene.add( planemesh );
-		// planemesh.rotation.x = -.5*Math.PI;
-		// planemesh.position.set( 0, -3, 0 );
-
-		mobius__hit.href = "javascript:alert(\"mobius\")";; // doesnt work
-		grid.href = "javascript:alert(\"grid\")";
-		grid.href = "javascript:alert(\"grid\")";
-
 
 		//renderer -------------------------------------------------------------------
 		var pixelRatio = window.devicePixelRatio;
@@ -259,7 +251,6 @@ var app = function() {
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.setClearColor( 0x0000ff, 0); // for transparent bg
-		// renderer.setClearColor( 0x0000ff, 1); // for opaque bg
 
 		container.appendChild( renderer.domElement );
 
@@ -273,6 +264,7 @@ var app = function() {
 
 		var timeDelta = time.getDelta();
 		var timeElapsed = time.getElapsedTime();
+		mouse.time += timeDelta;
 
 
 		/*
@@ -280,6 +272,31 @@ var app = function() {
 		*/
 		grid.material.opacity = 1 - Math.min((window.scrollY / (.6*window.innerHeight)), 1);
 
+
+		/*
+		Dim lights while scrolling/moving/resizing
+		*/
+		mouse.screensaver = 10; // delay in seconds
+
+		if ( mouse.time < mouse.screensaver ) {
+			container.classList.remove("interaction--screensaver");
+
+			if ( currentPage.classList.contains('about') || currentPage.classList.contains('current-affairs') ) {
+				for (var i = 0; i < light.length; i++) { // dim lights while scrolling
+					light[i].intensity = Math.max(Math.max(1-(window.scrollY / (.6*window.innerHeight)), .1), light[i].intensity * .8);
+				}
+			} else {
+				for (var i = 0; i < light.length; i++) { // dim lights
+					light[i].intensity = Math.max(.1, light[i].intensity * .8);
+				}
+			}
+		} else { // timeout! screensaver
+			container.classList.add("interaction--screensaver");
+
+			for (var i = 0; i < light.length; i++) { // light it up again!
+				light[i].intensity = Math.min(1,light[i].intensity * 1.2);
+			}
+		}
 
 		/*
 		Look in opposite direction of cursor
@@ -317,6 +334,7 @@ var app = function() {
 			}
 			mobius.rotation.y = mobius__hit.rotation.y += camera.velocity * .2 * (camera.quaternion._y - viewtarget.y);
 		}
+
 
 		/*
 		Mobius rotate (auto + energy)
@@ -364,6 +382,7 @@ var app = function() {
 
 	var onScroll = _.throttle(function() {
 		scrolling = true;
+		mouse.time = 0;
 
 		var windowScroll = window.scrollY;
 		var windowScroll_delta = windowScroll - windowScroll_previous; // or scroll velocity
@@ -376,12 +395,8 @@ var app = function() {
 		Laggy/sticky camera effect : displacement section
 		*/
 		camera.displacement_y -= .001 * velocity;
-		camera.position.y = 5 +  camera.displacement_y;
-
-		// if ( windowScroll / window.innerHeight < 1 ){
-		// 	console.log( windowScroll +", "+ window.innerHeight +": "+ (windowScroll / window.innerHeight *100)+"% " )
-		// 	// camera.fov = 35 + (windowScroll / window.innerHeight) * 30;
-		// }
+		camera.position.y = 5 + camera.displacement_y;
+		camera.fov = 35 + Math.min((windowScroll/window.innerHeight), 1) * 3; // zoom out (slightly)
 
 		/*
 		Interactive mobius onScroll
@@ -405,8 +420,6 @@ var app = function() {
 			'max' : -.15
 		},
 		'y' : {
-			// 'min' : .15,
-			// 'max' : -.15
 			'min' : .15,
 			'max' : -.15
 		}
@@ -425,6 +438,8 @@ var app = function() {
 		// camera.top = 6/camera__aspect;
 		// camera.bottom = -6/camera__aspect;
 
+		mouse.time = 0;
+
 		camera.updateProjectionMatrix();
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -434,6 +449,7 @@ var app = function() {
 	function onDocumentTouchStart(e) {
 		mouse.x = (e.touches[0].clientX/window.innerWidth) * 2 - 1; // for touch devices
 		mouse.y = -(e.touches[0].clientY/window.innerHeight) * 2 + 1;
+		mouse.time = 0;
 		mobiusClick();
 	}
 
@@ -475,6 +491,7 @@ var app = function() {
 		mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
 		mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1; // reverse: down = -, up is +
 		mouse.distance = Math.hypot(mouse.x,mouse.y);
+		mouse.time = 0;
 
 		/*
 		Look in opposite direction of cursor : translation to pivot boundaries
