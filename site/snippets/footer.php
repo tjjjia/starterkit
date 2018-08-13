@@ -9,7 +9,7 @@
 
 <div id="mobius"></div>
 
-<!-- <script type="text/javascript" src="http://localhost:3000/js/bundle.js"></script> -->
+<!-- <script type="text/javascript" src="http://192.168.0.192:3000/js/bundle.js"></script> -->
 
 <script src="/assets/js/bundle.min.js"></script>
 
@@ -36,13 +36,14 @@
 
 <style media="screen">
 	.filter--blueAlpha {
-		-webkit-filter: url(#alpha2);
-		filter: url(#alpha2);
+		-webkit-filter: url('#alpha2');
+		filter: url('#alpha2');
 	}
 	.filter--blueOpaque {
-		-webkit-filter: url(#opaque);
-		filter: url(#opaque);
+		-webkit-filter: url('#opaque');
+		filter: url('#opaque');
 	}
 </style>
+
 </body>
 </html>

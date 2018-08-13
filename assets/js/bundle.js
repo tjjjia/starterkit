@@ -212,11 +212,8 @@ var app = function() {
 
 		mobius.energy = 0;
 
-		// grid = new THREE.PolarGridHelper( 10, 48, 10, 64 );
-
 		grid = new THREE.GridHelper( 100, 50, 0xffffff, 0xffffff );
 		grid.position.set( 0, -5, 0 );
-		// grid.position.set( 0, 0, 0 );
 		grid.rotation.x = Math.PI*.3;
 
 		if ( currentPage.classList.contains('about') || currentPage.classList.contains('current-affairs') ) {
@@ -229,12 +226,12 @@ var app = function() {
 
 		grid.material.transparent = true;
 		grid.material.opacity = 1;
-		console.log( grid );
 
 		//renderer -------------------------------------------------------------------
 		var pixelRatio = window.devicePixelRatio;
 		if ( pixelRatio > 1 ) {
 			renderer = new THREE.WebGLRenderer({
+				antialias: false,
 				alpha: true
 			});
 		} else {
@@ -276,7 +273,7 @@ var app = function() {
 		/*
 		Dim lights while scrolling/moving/resizing
 		*/
-		mouse.screensaver = 10; // delay in seconds
+		mouse.screensaver = 30; // delay in seconds
 
 		if ( mouse.time < mouse.screensaver ) {
 			container.classList.remove("interaction--screensaver");
@@ -343,7 +340,7 @@ var app = function() {
 		// mobius.rotation.y = mobius__hit.rotation.y += timeDelta / (2*Math.PI *3);
 		mobius.rotation.y = mobius__hit.rotation.y += (.4 * Math.PI) * Math.sin( timeDelta / (2*Math.PI) ) + mobius.energy * .1;
 		mobius.rotation.z = mobius__hit.rotation.z += timeDelta / (2*Math.PI);
-		// texture.offset.y = texture__reverse.offset.y += mobius.energy * 0.05; // scroll -> texture
+		texture.offset.y = texture__reverse.offset.y += mobius.energy * 0.05; // scroll -> texture
 
 		/*
 		Mobius rotate (added energy)
@@ -485,23 +482,28 @@ var app = function() {
 	}, 16);
 
 	var onMouseMove = _.throttle(function(e) {
+		onGyroscope = function() { return; };
+		gyro.calibrate = false;
+
 		/*
 		Mouse object updates
 		*/
 		mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
 		mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1; // reverse: down = -, up is +
 		mouse.distance = Math.hypot(mouse.x,mouse.y);
+
 		mouse.time = 0;
 
 		/*
 		Look in opposite direction of cursor : translation to pivot boundaries
 		*/
-		if ( gyro.calibrate === true ) {
+		if ( gyro.calibrate !== true ) {
 			viewtarget.x = mouse.y.map(-1,1, pivot.x.min, pivot.x.max );
 			viewtarget.y = mouse.x.map(-1,1, pivot.y.min, pivot.y.max );
 		}
-		// console.log( "mouse.y:\t"+ mouse.y + "\nviewtarget.x:\t"+viewtarget.x );
-		// console.log( "mouse.x:\t"+ mouse.x + "\nviewtarget.y:\t"+viewtarget.y );
+
+		// console.log( "mouse.y:\t\t\t"+ Math.round(mouse.y*1000)/1000 + "\nviewtarget.x:\t"+ Math.round(viewtarget.x*1000)/1000 );
+		// console.log( "mouse.x:\t\t\t"+ Math.round(mouse.x*1000)/1000 + "\nviewtarget.y:\t"+ Math.round(viewtarget.y*1000)/1000 );
 	}, 16);
 
 	window.addEventListener( 'scroll', onScroll );
@@ -522,7 +524,7 @@ var app = function() {
 				// mobius.energy = Math.random() < 0.5 ? -1 : 1;
 
 				// add random val within range (min,max)
-				mobius.energy = getRandomArbitrary(-1,1) * 1.5;
+				mobius.energy = getRandomArbitrary(-1,1) * 2;
 				console.log( time.getElapsedTime() );
 			}
 		}
@@ -531,7 +533,7 @@ var app = function() {
 
 	function render() {
 		/*
-		Raycasting (highly verbose)
+		Raycasting (highly verbose for your reading pleasure)
 		*/
 		raycaster.setFromCamera( mouse, camera );
 		var intersects = raycaster.intersectObjects( scene.children );

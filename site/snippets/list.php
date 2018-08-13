@@ -58,11 +58,8 @@ This list returns all articles related to a resident (original content)
 					<li class="<?= $article->intendedTemplate() ?>">
 						<?php if(! $article->datetime_src()->empty() && ! $article->url_src()->empty()): ?>
 							<div class="card--infobox">
-								<p>Originally published
-									on
-									<a href="<?= $article->url_src() ?>" target="_blank">
-										<?= parse_url($article->url_src(), PHP_URL_HOST) ?>
-									</a>
+								<p>Originally published on
+									<a href="<?= $article->url_src() ?>" target="_blank"><?= parse_url($article->url_src(), PHP_URL_HOST) ?></a>
 									at
 									<?= $article->datetime_src() ?>
 									  <!-- on <?= $article->publisher() ?> -->
