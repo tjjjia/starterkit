@@ -62,18 +62,19 @@ This list returns all articles related to a resident (original content)
 									<a href="<?= $article->url_src() ?>" target="_blank"><?= parse_url($article->url_src(), PHP_URL_HOST) ?></a>
 									at
 									<?= $article->datetime_src() ?>
-									  <!-- on <?= $article->publisher() ?> -->
 								</p>
 							</div>
 						<?php endif ?>
 						<div class="card--main">
 							<a href="<?= $article->url_src() ?>" target="_blank">
-								<h3><?= $article->title()->html() ?> <img src="/assets/svg/chain.svg" style="fill:#fff; height: 5rem; padding: .7rem;"></h3>
+								<h3><?= $article->title()->html() ?> <svg class="inline-logo symbol-exit" viewBox="0 0 71.365 80.001"><text>(External link)</text><use xlink:href="/assets/svg/symbols.svg#symbol-exit"></use></svg></h3>
 							</a>
-							<?php if($article->image()): ?>
-								<figure>
-									<img src="<?= $article->image()->url() ?>" alt="Preview of <?= $article->title() ?>">
-								</figure>
+							<?php // image check
+								$image = $article->image();
+								if($image):
+							?>
+								<div class="card--image" style="display:block; height:60rem; margin-bottom:1.5rem; background-image: url(<?= $image->url()?>); background-position: <?= $image->focusPercentageX() ?>% <?= $image->focusPercentageY() ?>%;">
+								</div>
 							<?php endif ?>
 							<p><?= excerpt($article->description(), 300) ?></p>
 						</div>
@@ -83,9 +84,6 @@ This list returns all articles related to a resident (original content)
 							<li class="<?= $article->intendedTemplate() ?>">
 								<a href="<?= $article->url() ?>">
 									<h3><?= $article->title()->html() ?></h3>
-									<!-- <?php if($image = $article->images()->sortBy('sort', 'asc')->first()): $thumb = $image->crop(720, 240); ?>
-										<img src="<?= $thumb->url() ?>" alt="Thumbnail for <?= $article->title()->html() ?>" />
-									<?php endif ?> -->
 								</a>
 							</li>
 				<?php endif ?>
