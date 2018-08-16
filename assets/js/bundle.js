@@ -100,14 +100,6 @@ var app = function() {
 	crossingparallels.nl
 	tjjjia.work
 
-	trying out some interaction events
-	done:
-	- scrolling to manipulate rotation of mobius
-	- clicking geometry to navigate website
-
-	todo:
-	- hovering to manipulate tranformation
-
 	*************************************************************************************************/
 	var windowScroll = 0;
 
@@ -219,9 +211,9 @@ var app = function() {
 		if ( currentPage.classList.contains('about') || currentPage.classList.contains('current-affairs') ) {
 			scene.add( grid );
 		} else {
-			// light[0].intensity = .1;
-			// light[1].intensity = .1;
-			ambientLight.intensity = .4;
+			// light[0].intensity = .05;
+			// light[1].intensity = .05;
+			ambientLight.intensity = .5;
 		}
 
 		grid.material.transparent = true;
@@ -302,9 +294,7 @@ var app = function() {
 		camera_target_delta.x = Math.abs( camera.quaternion._x - viewtarget.x);
 		camera_target_delta.y = Math.abs( camera.quaternion._y - viewtarget.y);
 
-		// camera.velocity = Math.max( (1-Math.abs(window.scrollY / window.innerHeight))*.2 , .02);
-		// returns a value between 1 and .2;
-		camera.velocity = .02;
+		camera.velocity = .02; // percentage/remainder/increment
 
 		if ( camera_target_delta.x > .002 ) {
 			if ( camera.quaternion._x < viewtarget.x ) {
@@ -411,8 +401,6 @@ var app = function() {
 	// set boundaries for viewport
 	var pivot = {
 		'x' : {
-			// 'min' : -(1/3),
-			// 'max' : -.25
 			'min' : -.45,
 			'max' : -.15
 		},
