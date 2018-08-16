@@ -208,7 +208,7 @@ var app = function() {
 		grid.position.set( 0, -5, 0 );
 		grid.rotation.x = Math.PI*.3;
 
-		if ( currentPage.classList.contains('about') || currentPage.classList.contains('current-affairs') ) {
+		if ( currentPage.classList.contains('about') || currentPage.classList.contains('home') ) {
 			scene.add( grid );
 		} else {
 			// light[0].intensity = .05;
@@ -490,8 +490,6 @@ var app = function() {
 			viewtarget.y = mouse.x.map(-1,1, pivot.y.min, pivot.y.max );
 		}
 
-		// console.log( "mouse.y:\t\t\t"+ Math.round(mouse.y*1000)/1000 + "\nviewtarget.x:\t"+ Math.round(viewtarget.x*1000)/1000 );
-		// console.log( "mouse.x:\t\t\t"+ Math.round(mouse.x*1000)/1000 + "\nviewtarget.y:\t"+ Math.round(viewtarget.y*1000)/1000 );
 	}, 16);
 
 	window.addEventListener( 'scroll', onScroll );
@@ -513,7 +511,6 @@ var app = function() {
 
 				// add random val within range (min,max)
 				mobius.energy = getRandomArbitrary(-1,1) * 2;
-				console.log( time.getElapsedTime() );
 			}
 		}
 	};

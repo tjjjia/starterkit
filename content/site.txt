@@ -11,3 +11,7 @@ Description: Crossing Parallels brings together artists and scientists to collab
 ----
 
 Copyright: are (link: http://www.crossingparallels.nl text: Crossing Parallels) © 2017–(date: Year)
+
+----
+
+Twitter: @CrossParallels

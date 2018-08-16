@@ -22,8 +22,8 @@ return function($site, $pages, $page) {
 	}
 
 	$articles = $articles_filtered
-		->sortBy('datetime', 'desc');
-		// ->paginate(($perpage >= 1)? $perpage : 5)
+		->sortBy('datetime', 'desc')
+		->paginate(8);
 
 	return [
 		'articles'		=> $articles,

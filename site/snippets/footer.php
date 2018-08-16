@@ -9,8 +9,6 @@
 
 <div id="mobius"></div>
 
-<!-- <script type="text/javascript" src="http://localhost:3000/js/bundle.js"></script> -->
-
 <script src="/assets/js/bundle.min.js"></script>
 
 <svg xmlns="http://www.w3.org/2000/svg" class="asset" height="0">
