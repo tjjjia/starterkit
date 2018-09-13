@@ -50,12 +50,16 @@ fields:
    coverimage:
       label: Cover Image
       type: image
+      required: true
+      help: >
+         Dark images preferred, as titles will be displayed over cover images as white text.
       width: 1/2
 
    teaser:
       label: Teaser
       type: textarea
       buttons: false
+      width: 1/2
       help: >
          This will only appear in lists and overviews on this website, and may appear in social media posts or search engine results.
 
@@ -71,7 +75,7 @@ fields:
          # - header1
          # - header2
          # - bold
-         - italic
+         # - italic
          # - blockquote
          # - unorderedList
          # - orderedList
@@ -93,3 +97,5 @@ fields:
          - link
          - image
          # - line
+      help: >
+         Formatting enabled, please refer to templates for various layout options.

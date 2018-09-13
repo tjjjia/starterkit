@@ -5,9 +5,14 @@ fields:
     label: Title
     type:  text
 
-  author: (meta)
-    label: Author
+  author:
+    label: Author (meta)
     type:  text
+
+  twitter:
+    label: Twitter account
+    type:  text
+    help: include @, for example @CrossParallels
 
   description:
     label: Description (meta)

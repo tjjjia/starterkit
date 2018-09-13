@@ -29,8 +29,6 @@ if (isset($limit)) {
 }
 ?>
 
-<pre>this is the further reading snippet</pre>
-
 <nav class="further-reading">
 	<h2>Further reading</h2>
 	<ul>
@@ -43,7 +41,7 @@ if (isset($limit)) {
 							$image = $article->image($article->coverimage());
 							if($image):
 						?>
-							<div class="card--image" style="background-image: url(<?php echo $image->url() ?>); background-position: <?php echo $image->focusPercentageX() ?>% <?php echo $image->focusPercentageY() ?>%;">
+							<div class="card--image filter--blueOpaque" style="background-image: url(<?php echo $image->url() ?>); background-position: <?php echo $image->focusPercentageX() ?>% <?php echo $image->focusPercentageY() ?>%;">
 						<?php else: ?>
 							<div class="card--image">
 						<?php endif ?>

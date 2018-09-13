@@ -100,20 +100,14 @@ var app = function() {
 	crossingparallels.nl
 	tjjjia.work
 
-	trying out some interaction events
-	done:
-	- scrolling to manipulate rotation of mobius
-	- clicking geometry to navigate website
-
-	todo:
-	- hovering to manipulate tranformation
-
 	*************************************************************************************************/
 	var windowScroll = 0;
 
 	var container;
 	var controls;
 	var camera, scene, renderer;
+
+	var light = [];
 
 	var mobius, mobius__hit
 	var texture, texture__reverse;
@@ -122,6 +116,8 @@ var app = function() {
 
 	var raycaster = new THREE.Raycaster();
 	var mouse = new THREE.Vector2(0,0); // set to prevent initial mouseOver
+	mouse.time = 0;
+
 	var gyro = new THREE.Vector3(0,0,0);
 
 	var viewtarget = new THREE.Vector3(-.3,0,0);
@@ -163,9 +159,8 @@ var app = function() {
 		var ambientLight = new THREE.AmbientLight( 0xffffff, .75 );
 		scene.add( ambientLight );
 
-		var light = [];
 		for (var i = 0; i < 2; i++) {
-			light[i] = new THREE.DirectionalLight( 0xffffff );
+			light[i] = new THREE.DirectionalLight( 0xffffff, 1 );
 		}
 		light[0].position.set( 0, 10, -10 );
 		light[1].position.set( -10, 10, 0 ); // test
@@ -209,40 +204,26 @@ var app = function() {
 
 		mobius.energy = 0;
 
-		// grid = new THREE.PolarGridHelper( 10, 48, 10, 64 );
-
 		grid = new THREE.GridHelper( 100, 50, 0xffffff, 0xffffff );
 		grid.position.set( 0, -5, 0 );
-		// grid.position.set( 0, 0, 0 );
 		grid.rotation.x = Math.PI*.3;
 
-		if ( currentPage.classList.contains('about') || currentPage.classList.contains('current-affairs') ) {
+		if ( currentPage.classList.contains('about') || currentPage.classList.contains('home') ) {
 			scene.add( grid );
 		} else {
-			light[0].intensity = .1;
-			light[1].intensity = .4;
+			// light[0].intensity = .05;
+			// light[1].intensity = .05;
 			ambientLight.intensity = .5;
 		}
 
 		grid.material.transparent = true;
 		grid.material.opacity = 1;
-		console.log( grid );
-
-		// var plane = new THREE.PlaneGeometry( 1000, 1000 );
-		// var planemesh = new THREE.Mesh( plane, material__matte );
-		// scene.add( planemesh );
-		// planemesh.rotation.x = -.5*Math.PI;
-		// planemesh.position.set( 0, -3, 0 );
-
-		mobius__hit.href = "javascript:alert(\"mobius\")";; // doesnt work
-		grid.href = "javascript:alert(\"grid\")";
-		grid.href = "javascript:alert(\"grid\")";
-
 
 		//renderer -------------------------------------------------------------------
 		var pixelRatio = window.devicePixelRatio;
 		if ( pixelRatio > 1 ) {
 			renderer = new THREE.WebGLRenderer({
+				antialias: false,
 				alpha: true
 			});
 		} else {
@@ -259,7 +240,6 @@ var app = function() {
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		renderer.setClearColor( 0x0000ff, 0); // for transparent bg
-		// renderer.setClearColor( 0x0000ff, 1); // for opaque bg
 
 		container.appendChild( renderer.domElement );
 
@@ -273,6 +253,7 @@ var app = function() {
 
 		var timeDelta = time.getDelta();
 		var timeElapsed = time.getElapsedTime();
+		mouse.time += timeDelta;
 
 
 		/*
@@ -282,15 +263,38 @@ var app = function() {
 
 
 		/*
+		Dim lights while scrolling/moving/resizing
+		*/
+		mouse.screensaver = 30; // delay in seconds
+
+		if ( mouse.time < mouse.screensaver ) {
+			container.classList.remove("interaction--screensaver");
+
+			if ( currentPage.classList.contains('about') || currentPage.classList.contains('current-affairs') ) {
+				for (var i = 0; i < light.length; i++) { // dim lights while scrolling
+					light[i].intensity = Math.max(Math.max(1-(window.scrollY / (.6*window.innerHeight)), .1), light[i].intensity * .8);
+				}
+			} else {
+				for (var i = 0; i < light.length; i++) { // dim lights
+					light[i].intensity = Math.max(.1, light[i].intensity * .8);
+				}
+			}
+		} else { // timeout! screensaver
+			container.classList.add("interaction--screensaver");
+
+			for (var i = 0; i < light.length; i++) { // light it up again!
+				light[i].intensity = Math.min(1,light[i].intensity * 1.2);
+			}
+		}
+
+		/*
 		Look in opposite direction of cursor
 		*/
 		var camera_target_delta = {};
 		camera_target_delta.x = Math.abs( camera.quaternion._x - viewtarget.x);
 		camera_target_delta.y = Math.abs( camera.quaternion._y - viewtarget.y);
 
-		// camera.velocity = Math.max( (1-Math.abs(window.scrollY / window.innerHeight))*.2 , .02);
-		// returns a value between 1 and .2;
-		camera.velocity = .02;
+		camera.velocity = .02; // percentage/remainder/increment
 
 		if ( camera_target_delta.x > .002 ) {
 			if ( camera.quaternion._x < viewtarget.x ) {
@@ -318,6 +322,7 @@ var app = function() {
 			mobius.rotation.y = mobius__hit.rotation.y += camera.velocity * .2 * (camera.quaternion._y - viewtarget.y);
 		}
 
+
 		/*
 		Mobius rotate (auto + energy)
 		*/
@@ -325,7 +330,7 @@ var app = function() {
 		// mobius.rotation.y = mobius__hit.rotation.y += timeDelta / (2*Math.PI *3);
 		mobius.rotation.y = mobius__hit.rotation.y += (.4 * Math.PI) * Math.sin( timeDelta / (2*Math.PI) ) + mobius.energy * .1;
 		mobius.rotation.z = mobius__hit.rotation.z += timeDelta / (2*Math.PI);
-		// texture.offset.y = texture__reverse.offset.y += mobius.energy * 0.05; // scroll -> texture
+		texture.offset.y = texture__reverse.offset.y += mobius.energy * 0.05; // scroll -> texture
 
 		/*
 		Mobius rotate (added energy)
@@ -364,6 +369,7 @@ var app = function() {
 
 	var onScroll = _.throttle(function() {
 		scrolling = true;
+		mouse.time = 0;
 
 		var windowScroll = window.scrollY;
 		var windowScroll_delta = windowScroll - windowScroll_previous; // or scroll velocity
@@ -376,12 +382,8 @@ var app = function() {
 		Laggy/sticky camera effect : displacement section
 		*/
 		camera.displacement_y -= .001 * velocity;
-		camera.position.y = 5 +  camera.displacement_y;
-
-		// if ( windowScroll / window.innerHeight < 1 ){
-		// 	console.log( windowScroll +", "+ window.innerHeight +": "+ (windowScroll / window.innerHeight *100)+"% " )
-		// 	// camera.fov = 35 + (windowScroll / window.innerHeight) * 30;
-		// }
+		camera.position.y = 5 + camera.displacement_y;
+		camera.fov = 35 + Math.min((windowScroll/window.innerHeight), 1) * 3; // zoom out (slightly)
 
 		/*
 		Interactive mobius onScroll
@@ -399,14 +401,10 @@ var app = function() {
 	// set boundaries for viewport
 	var pivot = {
 		'x' : {
-			// 'min' : -(1/3),
-			// 'max' : -.25
 			'min' : -.45,
 			'max' : -.15
 		},
 		'y' : {
-			// 'min' : .15,
-			// 'max' : -.15
 			'min' : .15,
 			'max' : -.15
 		}
@@ -425,6 +423,8 @@ var app = function() {
 		// camera.top = 6/camera__aspect;
 		// camera.bottom = -6/camera__aspect;
 
+		mouse.time = 0;
+
 		camera.updateProjectionMatrix();
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -434,6 +434,7 @@ var app = function() {
 	function onDocumentTouchStart(e) {
 		mouse.x = (e.touches[0].clientX/window.innerWidth) * 2 - 1; // for touch devices
 		mouse.y = -(e.touches[0].clientY/window.innerHeight) * 2 + 1;
+		mouse.time = 0;
 		mobiusClick();
 	}
 
@@ -469,6 +470,9 @@ var app = function() {
 	}, 16);
 
 	var onMouseMove = _.throttle(function(e) {
+		onGyroscope = function() { return; };
+		gyro.calibrate = false;
+
 		/*
 		Mouse object updates
 		*/
@@ -476,15 +480,16 @@ var app = function() {
 		mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1; // reverse: down = -, up is +
 		mouse.distance = Math.hypot(mouse.x,mouse.y);
 
+		mouse.time = 0;
+
 		/*
 		Look in opposite direction of cursor : translation to pivot boundaries
 		*/
-		if ( gyro.calibrate === true ) {
+		if ( gyro.calibrate !== true ) {
 			viewtarget.x = mouse.y.map(-1,1, pivot.x.min, pivot.x.max );
 			viewtarget.y = mouse.x.map(-1,1, pivot.y.min, pivot.y.max );
 		}
-		// console.log( "mouse.y:\t"+ mouse.y + "\nviewtarget.x:\t"+viewtarget.x );
-		// console.log( "mouse.x:\t"+ mouse.x + "\nviewtarget.y:\t"+viewtarget.y );
+
 	}, 16);
 
 	window.addEventListener( 'scroll', onScroll );
@@ -505,8 +510,7 @@ var app = function() {
 				// mobius.energy = Math.random() < 0.5 ? -1 : 1;
 
 				// add random val within range (min,max)
-				mobius.energy = getRandomArbitrary(-1,1) * 1.5;
-				console.log( time.getElapsedTime() );
+				mobius.energy = getRandomArbitrary(-1,1) * 2;
 			}
 		}
 	};
@@ -514,7 +518,7 @@ var app = function() {
 
 	function render() {
 		/*
-		Raycasting (highly verbose)
+		Raycasting (highly verbose for your reading pleasure)
 		*/
 		raycaster.setFromCamera( mouse, camera );
 		var intersects = raycaster.intersectObjects( scene.children );

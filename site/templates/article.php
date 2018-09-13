@@ -1,9 +1,14 @@
 <?php snippet('header') ?>
-<pre>this is the article template</pre>
 
 <main class="main" role="main">
 	<article>
 		<header class="article-header">
+			<?php if(! $page->datetime()->empty() && ! $page->author()->empty() ): ?>
+				<div class="cover--infobox">
+					<p>Published by <?= $page->author() ?>
+					at <?= $page->datetime() ?></p>
+				</div>
+			<?php endif ?>
 			<?php // image check
 				$image = $page->image($page->coverimage());
 				if($image):
@@ -15,16 +20,6 @@
 				<div class="cover--title">
 					<h1><?= $page->title()->html() ?></h1>
 				</div>
-			<?php if(! $page->datetime()->empty() ): ?>
-				<div class="cover--infobox">
-					<p>Published: <?= $page->datetime() ?></p>
-				</div>
-			<?php endif ?>
-			<?php if(! $page->author()->empty() ): ?>
-				<div class="cover--infobox">
-					<p>Author: <?= $page->author() ?></p>
-				</div>
-			<?php endif ?>
 		</header>
 
 		<div class="intro">

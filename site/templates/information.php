@@ -1,5 +1,5 @@
 <?php snippet('header') ?>
-<pre>this is the information template</pre>
+
 <?php
 	if ( $page ) {
 		echo '<main class="main '. $page .'" role="main">';

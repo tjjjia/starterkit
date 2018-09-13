@@ -1,18 +1,22 @@
 <?php snippet('header') ?>
 
-<pre>this is the default template (not in use?)</pre>
-<main class="main" role="main">
+<main class="main error" role="main">
+	<article>
+		<header class="article-header">
+				<div class="cover--title">
+					<h1><?= $page->title()->html() ?></h1>
+				</div>
+		</header>
 
-	<header class="wrap">
-		<h1><?= $page->title()->html() ?></h1>
-		<div class="intro text">
+		<div class="intro">
 			<?= $page->intro()->kirbytext() ?>
 		</div>
-	</header>
 
-	<div class="text wrap">
-		<?= $page->text()->kirbytext() ?>
-	</div>
+		<div class="text">
+			<?= $page->text()->kirbytext() ?>
+		</div>
+
+	</article>
 
 </main>
 
