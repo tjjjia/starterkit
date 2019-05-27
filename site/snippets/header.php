@@ -47,8 +47,6 @@
 	   📡 tjjjia (2018) -->
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
-
 	<?= $page->metaTags() ?>
 	<meta name="apple-mobile-web-app-title" content="Crossing Parallels">
 	<link rel="apple-touch-icon" href="http://www.crossingparallels.nl/assets/img/mobius-textured-02-logo-square-insta.png">
